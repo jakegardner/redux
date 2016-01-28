@@ -5,10 +5,10 @@ import thunk from 'redux-thunk'
 import api from '../middleware/api'
 import rootReducer from '../reducers'
 
-const finalCreateStore = compose(
-  applyMiddleware(thunk, api, syncHistory(browserHistory)),
-)(createStore)
-
 export default function configureStore(initialState) {
-  return finalCreateStore(rootReducer, initialState)
+  return createStore(
+    rootReducer,
+    initialState,
+    applyMiddleware(thunk, api, syncHistory(browserHistory))
+  )
 }

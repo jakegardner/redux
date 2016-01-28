@@ -8,13 +8,14 @@ import createLogger from 'redux-logger'
 import rootReducer from '../reducers'
 
 const reduxRouterMiddleware = syncHistory(browserHistory)
-const finalCreateStore = compose(
-  applyMiddleware(thunk, api, reduxRouterMiddleware, createLogger()),
-  DevTools.instrument()
-)(createStore)
 
 export default function configureStore(initialState) {
-  const store = finalCreateStore(rootReducer, initialState)
+  const store = createStore(
+    rootReducer,
+    initialState,
+    applyMiddleware(thunk, api, reduxRouterMiddleware, createLogger()),
+    DevTools.instrument()
+  )
   
   // Required for replaying actions from devtools to work
   reduxRouterMiddleware.listenForReplays(store)
